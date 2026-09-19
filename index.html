@@ -118,7 +118,7 @@
       padding-bottom: 30px;
     }
 
-    /* 标准 A4 页面 (210mm x 297mm) - 3×3 满格排版（与正面一致） */
+    /* 标准 A4 页面 (210mm x 297mm) - 3×3 排版 */
     .a4-page {
       width: 210mm;
       height: 297mm;
@@ -134,11 +134,11 @@
       box-sizing: border-box;
     }
 
-    /* 卡片容器（尺寸与正面严格对齐） */
+    /* 卡片容器 */
     .card {
       border: 1.2px dashed #a5d6a7;
       border-radius: 6px;
-      padding: 4px 6px;
+      padding: 6px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -181,42 +181,39 @@
       letter-spacing: 1px;
     }
 
-    /* 3. 核心：148px 米字格（与正面 148px 完全一致） */
-    .mizige-box {
-      width: 148px;
-      height: 148px;
-      position: relative;
-      border: 2.2px solid var(--grid-border);
+    /* 3. 核心：2×2 4个小田字格区域 */
+    .small-grids-container {
+      width: 100%;
       display: flex;
-      align-items: center;
       justify-content: center;
-      margin: 1px 0;
-      flex-shrink: 0;
-      box-shadow: 0 0 0 1px rgba(46, 125, 50, 0.08);
+      align-items: center;
+      margin: 4px 0;
+      flex-grow: 1;
     }
 
-    .mizige-svg {
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 8px;
+      width: 156px;
+      height: 156px;
+    }
+
+    .small-tianzige {
+      width: 74px;
+      height: 74px;
+      position: relative;
+      border: 1.8px solid var(--grid-border);
+      box-shadow: 0 0 0 1px rgba(46, 125, 50, 0.05);
+    }
+
+    .tianzige-svg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-    }
-
-    /* 4. 底部填空行 */
-    .card-info-blank {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 2px 1px 4px 1px;
-      flex-shrink: 0;
-    }
-
-    .blank-line {
-      width: 100%;
-      height: 18px;
-      border-bottom: 1px solid var(--pinyin-line);
     }
 
     /* 移动端预览适配 */
@@ -268,7 +265,7 @@
     <div class="options-bar">
       <label>
         <input type="checkbox" id="showDotGrid" onchange="generateCards()">
-        <span>启用米字格点阵（可选）</span>
+        <span>启用田字格点阵（可选）</span>
       </label>
       <label>
         <input type="checkbox" id="mirrorMode" onchange="generateCards()">
@@ -354,52 +351,53 @@
           strokeRow.className = 'stroke-order-row';
           strokeRow.innerHTML = `<span class="stroke-blank-label">__ 画</span>`;
 
-          // 3. 核心 148px 米字格（可选择点阵）
-          const mizigeBox = document.createElement('div');
-          mizigeBox.className = 'mizige-box';
+          // 3. 2×2 4个小田字格区域（适合规范日常手写）
+          const smallGridsContainer = document.createElement('div');
+          smallGridsContainer.className = 'small-grids-container';
 
           let dotGridSVG = '';
           if (showDotGrid) {
-            // 5x5 结构点阵
             dotGridSVG = `
-              <circle cx="25" cy="25" r="1.5" fill="#a5d6a7" />
-              <circle cx="50" cy="25" r="1.5" fill="#a5d6a7" />
-              <circle cx="75" cy="25" r="1.5" fill="#a5d6a7" />
-              <circle cx="25" cy="50" r="1.5" fill="#a5d6a7" />
-              <circle cx="75" cy="50" r="1.5" fill="#a5d6a7" />
-              <circle cx="25" cy="75" r="1.5" fill="#a5d6a7" />
-              <circle cx="50" cy="75" r="1.5" fill="#a5d6a7" />
-              <circle cx="75" cy="75" r="1.5" fill="#a5d6a7" />
+              <circle cx="25" cy="25" r="1.8" fill="#a5d6a7" />
+              <circle cx="50" cy="25" r="1.8" fill="#a5d6a7" />
+              <circle cx="75" cy="25" r="1.8" fill="#a5d6a7" />
+              <circle cx="25" cy="50" r="1.8" fill="#a5d6a7" />
+              <circle cx="75" cy="50" r="1.8" fill="#a5d6a7" />
+              <circle cx="25" cy="75" r="1.8" fill="#a5d6a7" />
+              <circle cx="50" cy="75" r="1.8" fill="#a5d6a7" />
+              <circle cx="75" cy="75" r="1.8" fill="#a5d6a7" />
             `;
           }
 
-          mizigeBox.innerHTML = `
-            <svg class="mizige-svg" viewBox="0 0 100 100">
-              <line x1="0" y1="50" x2="100" y2="50" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.5" />
-              <line x1="50" y1="0" x2="50" y2="100" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.5" />
-              <line x1="0" y1="0" x2="100" y2="100" stroke="#c8e6c9" stroke-width="0.8" />
-              <line x1="100" y1="0" x2="0" y2="100" stroke="#c8e6c9" stroke-width="0.8" />
-              ${dotGridSVG}
-            </svg>
+          const singleGridHTML = `
+            <div class="small-tianzige">
+              <svg class="tianzige-svg" viewBox="0 0 100 100">
+                <line x1="0" y1="50" x2="100" y2="50" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.5" />
+                <line x1="50" y1="0" x2="50" y2="100" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.5" />
+                <line x1="0" y1="0" x2="100" y2="100" stroke="#c8e6c9" stroke-width="0.8" />
+                <line x1="100" y1="0" x2="0" y2="100" stroke="#c8e6c9" stroke-width="0.8" />
+                ${dotGridSVG}
+              </svg>
+            </div>
           `;
 
-          // 4. 底部书写练习线（代替原组词造句区）
-          const cardInfoBlank = document.createElement('div');
-          cardInfoBlank.className = 'card-info-blank';
-          cardInfoBlank.innerHTML = `
-            <div class="blank-line"></div>
-            <div class="blank-line"></div>
+          smallGridsContainer.innerHTML = `
+            <div class="grid-2x2">
+              ${singleGridHTML}
+              ${singleGridHTML}
+              ${singleGridHTML}
+              ${singleGridHTML}
+            </div>
           `;
 
           card.appendChild(pinyinContainer);
           card.appendChild(strokeRow);
-          card.appendChild(mizigeBox);
-          card.appendChild(cardInfoBlank);
+          card.appendChild(smallGridsContainer);
 
           page.appendChild(card);
         }
 
-        // 补齐末页卡片，保持网格整齐
+        // 补齐末页卡片
         if (pageData.length < CARDS_PER_PAGE) {
           for (let i = 0; i < CARDS_PER_PAGE - pageData.length; i++) {
             const emptyCard = document.createElement('div');
