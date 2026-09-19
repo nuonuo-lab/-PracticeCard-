@@ -2,25 +2,24 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>一年级生字卡片练习模版（空白版）</title>
-  
-  <!-- 引入标准单层 ɑ 手写拼音字体 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>一年级生字卡片背面白模/练习卡生成器</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Andika:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --primary-color: #2e7d32;
-      --grid-border: #2e7d32;   /* 田/米字格实线绿 */
-      --grid-dash: #81c784;     /* 田/米字格虚线绿 */
+      --grid-border: #2e7d32;   /* 田字格实线绿 */
+      --grid-dash: #81c784;     /* 田字格虚线绿 */
+      --grid-diag: #c8e6c9;     /* 辅助斜线绿 */
       --pinyin-line: #82c99b;   /* 四线三格护眼绿 */
-      --text-black: #000000;    /* 黑色文字/划线 */
-      --line-gray: #a5d6a7;     /* 填空下划线颜色 */
+      --text-black: #000000;    /* 纯黑色文字 */
 
-      --font-kaiti: "STKaiti", "Kaiti SC", "KaiTi", "KaiTi_GB2312", serif;
-      --font-pinyin: "Andika", sans-serif;
+      /* 跨平台楷体回退序列 */
+      --font-kaiti: "STKaiti", "Kaiti SC", "KaiTi", "KaiTi_GB2312", "Noto Serif SC", "FZKai-Z03S", serif;
     }
 
     * {
@@ -36,61 +35,76 @@
       color: #000;
     }
 
-    /* 顶部精简控制面板 */
+    /* 控制面板 */
     .control-panel {
-      max-width: 900px;
+      max-width: 1050px;
       margin: 15px auto;
       padding: 15px 20px;
       background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .control-panel h1 {
-      font-size: 18px;
-      color: var(--primary-color);
-      margin-bottom: 8px;
+      font-size: 20px;
+      color: #1b5e20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
-    .info-tips {
-      font-size: 12px;
-      color: #333;
+    .options-bar {
+      display: flex;
+      gap: 20px;
+      align-items: center;
       background: #e8f5e9;
-      padding: 6px 10px;
-      border-left: 3px solid var(--primary-color);
-      border-radius: 3px;
-      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border: 1px solid #c8e6c9;
+      font-size: 14px;
+    }
+
+    .options-bar label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #1b5e20;
     }
 
     textarea {
       width: 100%;
       height: 90px;
-      padding: 8px;
+      padding: 10px;
       border: 1px solid #a5d6a7;
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 13px;
+      font-family: monospace;
       resize: vertical;
+      line-height: 1.4;
     }
 
     .btn-group {
-      margin-top: 10px;
+      margin-top: 12px;
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     button {
-      padding: 7px 18px;
-      font-size: 13px;
+      padding: 9px 22px;
+      font-size: 14px;
       font-weight: bold;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
 
-    .btn-primary { background-color: var(--primary-color); color: white; }
+    .btn-primary { background-color: #2e7d32; color: white; }
     .btn-primary:hover { background-color: #1b5e20; }
     .btn-print { background-color: #27ae60; color: white; }
     .btn-print:hover { background-color: #1e8449; }
@@ -104,26 +118,26 @@
       padding-bottom: 30px;
     }
 
-    /* 标准 A4 页面 (210mm x 297mm) - 3×3 格排版 */
+    /* 标准 A4 页面 (210mm x 297mm) - 3×3 满格排版（与正面一致） */
     .a4-page {
       width: 210mm;
       height: 297mm;
       background: white;
       padding: 3.5mm 4mm;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
-      gap: 2.5mm;
+      gap: 2.5mm 2.5mm;
       page-break-after: always;
       break-after: page;
       box-sizing: border-box;
     }
 
-    /* 3x3 空白练习卡片 */
+    /* 卡片容器（尺寸与正面严格对齐） */
     .card {
-      border: 1px dashed #a5d6a7;
-      border-radius: 4px;
+      border: 1.2px dashed #a5d6a7;
+      border-radius: 6px;
       padding: 4px 6px;
       display: flex;
       flex-direction: column;
@@ -134,10 +148,10 @@
       overflow: hidden;
     }
 
-    /* 1. 四线三格区 */
+    /* 1. 拼音区（空白四线三格） */
     .pinyin-container {
       width: 100%;
-      height: 36px;
+      height: 38px;
       position: relative;
       flex-shrink: 0;
     }
@@ -148,38 +162,37 @@
       display: block;
     }
 
-    /* 2. 画数填空区 */
+    /* 2. 笔画区：楷体 __ 画 */
     .stroke-order-row {
       width: 100%;
-      height: 22px;
+      height: 27px;
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      font-size: 13px;
+      padding: 0 1px;
+      flex-shrink: 0;
+    }
+
+    .stroke-blank-label {
+      font-family: var(--font-kaiti);
+      font-size: 16.5px;
       font-weight: bold;
       color: var(--text-black);
-      flex-shrink: 0;
-      padding: 0 2px;
+      letter-spacing: 1px;
     }
 
-    .fill-line-short {
-      display: inline-block;
-      width: 45px;
-      border-bottom: 1.5px solid var(--text-black);
-      margin: 0 2px;
-    }
-
-    /* 3. 148px 纯空白米字格 */
+    /* 3. 核心：148px 米字格（与正面 148px 完全一致） */
     .mizige-box {
       width: 148px;
       height: 148px;
       position: relative;
-      border: 2px solid var(--grid-border);
+      border: 2.2px solid var(--grid-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 2px 0;
+      margin: 1px 0;
       flex-shrink: 0;
+      box-shadow: 0 0 0 1px rgba(46, 125, 50, 0.08);
     }
 
     .mizige-svg {
@@ -190,44 +203,42 @@
       height: 100%;
     }
 
-    /* 4. 底部组词造句练习区 */
-    .card-info {
+    /* 4. 底部填空行 */
+    .card-info-blank {
       width: 100%;
-      font-family: var(--font-kaiti);
-      color: var(--text-black);
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      padding: 0 2px;
+      gap: 6px;
+      padding: 2px 1px 4px 1px;
       flex-shrink: 0;
     }
 
-    .info-item {
-      display: flex;
-      align-items: baseline;
-      width: 100%;
-    }
-
-    .label {
-      font-weight: bold;
-      font-size: 15px;
-      white-space: nowrap;
-    }
-
     .blank-line {
-      flex: 1;
-      border-bottom: 1.5px dashed var(--line-gray);
-      height: 15px;
+      width: 100%;
+      height: 18px;
+      border-bottom: 1px solid var(--pinyin-line);
     }
 
-    /* 移动端适配 */
+    /* 移动端预览适配 */
     @media screen and (max-width: 768px) {
-      .control-panel { margin: 10px; padding: 12px; }
-      #preview-container { overflow-x: auto; width: 100%; padding: 0 10px 20px; }
-      .a4-page { transform-origin: top left; max-width: 100%; height: auto; min-height: 297mm; }
+      .control-panel {
+        margin: 10px;
+        padding: 12px;
+      }
+      #preview-container {
+        overflow-x: auto;
+        width: 100%;
+        padding: 0 10px 20px 10px;
+      }
+      .a4-page {
+        transform-origin: top left;
+        max-width: 100%;
+        height: auto;
+        min-height: 297mm;
+      }
     }
 
-    /* 打印/导出 PDF 配置 */
+    /* 打印配置 */
     @media print {
       body { background: none; }
       .control-panel { display: none !important; }
@@ -239,7 +250,10 @@
         height: 297mm;
         transform: none !important;
       }
-      @page { size: A4 portrait; margin: 0; }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
     }
   </style>
 </head>
@@ -247,96 +261,147 @@
 
   <!-- 控制面板 -->
   <div class="control-panel">
-    <h1>生字练习卡模版生成器</h1>
-    <div class="info-tips">按张数生成空白练习卡（1页9卡，米字格，供学生听写/书写练习）。</div>
-    <textarea id="inputText" placeholder="输入要生成的卡片数量或生字列表..."></textarea>
+    <h1>
+      <span>生字卡片背面白模/练习卡生成器</span>
+    </h1>
+
+    <div class="options-bar">
+      <label>
+        <input type="checkbox" id="showDotGrid" onchange="generateCards()">
+        <span>启用米字格点阵（可选）</span>
+      </label>
+      <label>
+        <input type="checkbox" id="mirrorMode" onchange="generateCards()">
+        <span>双面打印镜像翻转</span>
+      </label>
+    </div>
+
+    <textarea id="inputText" placeholder="输入生字列表..."></textarea>
+    
     <div class="btn-group">
-      <button class="btn-primary" onclick="generateCards()">生成字卡</button>
-      <button class="btn-print" onclick="window.print()">打印 / 导出 PDF</button>
+      <button class="btn-primary" onclick="generateCards()">生成/刷新练习卡</button>
+      <button class="btn-print" onclick="window.print()">导出 PDF / 打印</button>
     </div>
   </div>
 
   <div id="preview-container"></div>
 
   <script>
-    // 默认生成 9 张空白卡片（1页）
-    document.getElementById('inputText').value = '1\n2\n3\n4\n5\n6\n7\n8\n9';
+    const allCharacters = ["一","二","三","上","口","目","耳","手","日","田","禾","火","八","十","了","子","人","大","月","儿","头","里","可","东","西","天","四","是","女","开","水","去","来","不","小","少","早","书","刀","尺","本","木","林","土","力","心","中","五","立","正","在","后","我","好","长","比","巴","把","下","个","雨","们","问","有","半","从","才","明","同","学","自","己","衣","白","的","又","和","竹","牙","马","用","几","只","石","多","出","见","对","妈","全","回"];
+
+    document.getElementById('inputText').value = allCharacters.join('、');
 
     function generateCards() {
-      const text = document.getElementById('inputText').value.trim();
-      const lines = text ? text.split('\n').filter(l => l.trim() !== '') : [];
-      const totalCards = lines.length > 0 ? lines.length : 9;
-      
+      const text = document.getElementById('inputText').value;
+      const charArray = text.replace(/[^\u4e00-\u9fa5]/g, '').split('');
       const container = document.getElementById('preview-container');
       container.innerHTML = '';
 
+      if (charArray.length === 0) {
+        alert('请输入汉字！');
+        return;
+      }
+
+      const mirrorMode = document.getElementById('mirrorMode').checked;
+      const showDotGrid = document.getElementById('showDotGrid').checked;
+
       const CARDS_PER_PAGE = 9;
-      const pageCount = Math.ceil(totalCards / CARDS_PER_PAGE);
+      const pageCount = Math.ceil(charArray.length / CARDS_PER_PAGE);
 
       for (let p = 0; p < pageCount; p++) {
         const page = document.createElement('div');
         page.className = 'a4-page';
 
-        const currentCount = Math.min(CARDS_PER_PAGE, totalCards - p * CARDS_PER_PAGE);
+        let pageData = charArray.slice(p * CARDS_PER_PAGE, (p + 1) * CARDS_PER_PAGE);
 
-        for (let i = 0; i < currentCount; i++) {
+        // 双面打印镜像翻转逻辑
+        if (mirrorMode) {
+          const mirrored = [];
+          for (let row = 0; row < 3; row++) {
+            const rowCards = pageData.slice(row * 3, (row + 1) * 3);
+            while (rowCards.length < 3) rowCards.push(null);
+            mirrored.push(rowCards[2], rowCards[1], rowCards[0]);
+          }
+          pageData = mirrored;
+        }
+
+        for (const char of pageData) {
+          if (!char) {
+            const emptyCard = document.createElement('div');
+            emptyCard.className = 'card';
+            emptyCard.style.visibility = 'hidden';
+            page.appendChild(emptyCard);
+            continue;
+          }
+
           const card = document.createElement('div');
           card.className = 'card';
 
-          // 1. 矢量四线三格区（纯空白）
+          // 1. 空白矢量四线三格
           const pinyinContainer = document.createElement('div');
           pinyinContainer.className = 'pinyin-container';
           pinyinContainer.innerHTML = `
-            <svg class="pinyin-svg" viewBox="0 0 100 36">
+            <svg class="pinyin-svg" viewBox="0 0 100 38">
               <line x1="0" y1="4" x2="100" y2="4" stroke="#82c99b" stroke-width="0.8" />
-              <line x1="0" y1="13" x2="100" y2="13" stroke="#82c99b" stroke-width="0.8" stroke-dasharray="2,1.5" />
-              <line x1="0" y1="22" x2="100" y2="22" stroke="#82c99b" stroke-width="0.8" stroke-dasharray="2,1.5" />
-              <line x1="0" y1="31" x2="100" y2="31" stroke="#82c99b" stroke-width="0.8" />
+              <line x1="0" y1="14" x2="100" y2="14" stroke="#82c99b" stroke-width="0.8" stroke-dasharray="2,1.5" />
+              <line x1="0" y1="24" x2="100" y2="24" stroke="#82c99b" stroke-width="0.8" stroke-dasharray="2,1.5" />
+              <line x1="0" y1="34" x2="100" y2="34" stroke="#82c99b" stroke-width="0.8" />
             </svg>
           `;
 
-          // 2. 笔画数填空区
+          // 2. 笔画行：楷体 __ 画
           const strokeRow = document.createElement('div');
           strokeRow.className = 'stroke-order-row';
-          strokeRow.innerHTML = '笔画：<span class="fill-line-short"></span> 画';
+          strokeRow.innerHTML = `<span class="stroke-blank-label">__ 画</span>`;
 
-          // 3. 148px 纯空白米字格区
+          // 3. 核心 148px 米字格（可选择点阵）
           const mizigeBox = document.createElement('div');
           mizigeBox.className = 'mizige-box';
+
+          let dotGridSVG = '';
+          if (showDotGrid) {
+            // 5x5 结构点阵
+            dotGridSVG = `
+              <circle cx="25" cy="25" r="1.5" fill="#a5d6a7" />
+              <circle cx="50" cy="25" r="1.5" fill="#a5d6a7" />
+              <circle cx="75" cy="25" r="1.5" fill="#a5d6a7" />
+              <circle cx="25" cy="50" r="1.5" fill="#a5d6a7" />
+              <circle cx="75" cy="50" r="1.5" fill="#a5d6a7" />
+              <circle cx="25" cy="75" r="1.5" fill="#a5d6a7" />
+              <circle cx="50" cy="75" r="1.5" fill="#a5d6a7" />
+              <circle cx="75" cy="75" r="1.5" fill="#a5d6a7" />
+            `;
+          }
+
           mizigeBox.innerHTML = `
             <svg class="mizige-svg" viewBox="0 0 100 100">
-              <line x1="0" y1="50" x2="100" y2="50" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.2" />
-              <line x1="50" y1="0" x2="50" y2="100" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.2" />
-              <line x1="0" y1="0" x2="100" y2="100" stroke="#c8e6c9" stroke-dasharray="2,2" stroke-width="0.8" />
-              <line x1="100" y1="0" x2="0" y2="100" stroke="#c8e6c9" stroke-dasharray="2,2" stroke-width="0.8" />
+              <line x1="0" y1="50" x2="100" y2="50" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.5" />
+              <line x1="50" y1="0" x2="50" y2="100" stroke="#81c784" stroke-dasharray="3,3" stroke-width="1.5" />
+              <line x1="0" y1="0" x2="100" y2="100" stroke="#c8e6c9" stroke-width="0.8" />
+              <line x1="100" y1="0" x2="0" y2="100" stroke="#c8e6c9" stroke-width="0.8" />
+              ${dotGridSVG}
             </svg>
           `;
 
-          // 4. 底部组词造句空白划线区
-          const cardInfo = document.createElement('div');
-          cardInfo.className = 'card-info';
-          cardInfo.innerHTML = `
-            <div class="info-item">
-              <span class="label">组词：</span>
-              <div class="blank-line"></div>
-            </div>
-            <div class="info-item">
-              <span class="label">造句：</span>
-              <div class="blank-line"></div>
-            </div>
+          // 4. 底部书写练习线（代替原组词造句区）
+          const cardInfoBlank = document.createElement('div');
+          cardInfoBlank.className = 'card-info-blank';
+          cardInfoBlank.innerHTML = `
+            <div class="blank-line"></div>
+            <div class="blank-line"></div>
           `;
 
           card.appendChild(pinyinContainer);
           card.appendChild(strokeRow);
           card.appendChild(mizigeBox);
-          card.appendChild(cardInfo);
+          card.appendChild(cardInfoBlank);
 
           page.appendChild(card);
         }
 
-        // 补齐 9 格对齐
-        if (currentCount < CARDS_PER_PAGE) {
-          for (let j = 0; j < CARDS_PER_PAGE - currentCount; j++) {
+        // 补齐末页卡片，保持网格整齐
+        if (pageData.length < CARDS_PER_PAGE) {
+          for (let i = 0; i < CARDS_PER_PAGE - pageData.length; i++) {
             const emptyCard = document.createElement('div');
             emptyCard.className = 'card';
             emptyCard.style.visibility = 'hidden';
@@ -354,4 +419,3 @@
   </script>
 </body>
 </html>
-
